@@ -21,22 +21,21 @@
 	},
 	"license": "MIT",
 	"peerDependencies": {
-		"@ngrx/store": "^4.0.3"
+		"@ngrx/store": "^7.3.0"
 	},
 	"dependencies": {
-		"normalizr": "^3.2.3"
+		"normalizr": "^3.3.0"
 	},
 	"devDependencies": {
-		"@angular/compiler": "^4.3.5",
-		"@angular/compiler-cli": "^4.3.5",
-		"@angular/core": "^4.3.5",
-		"@ngrx/store": "^4.0.3",
+		"@angular/compiler": "^7.2.14",
+		"@angular/compiler-cli": "^7.2.14",
+		"@angular/core": "^7.2.2",
+		"@ngrx/store": "^7.3.0",
 		"@types/jasmine": "^2.5.53",
 		"@types/jasminewd2": "^2.0.2",
 		"@types/lodash": "^4.14.82",
 		"@types/node": "^8.0.24",
 		"@types/should": "^8.3.0",
-		"codelyzer": "^3.2.1",
 		"jasmine-core": "^2.7.0",
 		"jasmine-spec-reporter": "^4.2.1",
 		"karma": "^1.7.0",
@@ -47,11 +46,13 @@
 		"karma-jasmine": "^1.1.0",
 		"karma-jasmine-html-reporter": "^0.2.2",
 		"karma-typescript": "^3.0.5",
-		"rxjs": "^5.4.3",
+		"rxjs": "^6.4.0",
+		"normalizr": "^3.3.0",
 		"should": "^11.2.1",
 		"ts-node": "^3.3.0",
 		"tslint": "^5.6.0",
-		"typescript": "^2.4.2",
-		"zone.js": "^0.8.16"
+		"typescript": "~3.1.6",
+		"zone.js": "~0.8.29",
+		"codelyzer": "~4.5.0"
 	}
 }
