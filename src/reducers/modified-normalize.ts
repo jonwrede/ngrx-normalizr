@@ -1,4 +1,4 @@
-import { EntityMap, SchemaSelectors } from './normalize';
+import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
 /**
  * Exports reducers and selectors of the ngrx-normalizr package.
  */
@@ -240,4 +240,65 @@ export function createModifiedSchemaSelectors<T>(
      */
     entitiesProjector: createEntitiesProjector<T>(schema)
   };
+}
+
+export const getCombinedNormalizedEntities: MemoizedSelector<
+  any,
+  EntityMap
+> = createSelector(
+  getNormalizedEntities,
+  getModifiedNormalizedEntities,
+  (base: EntityMap, modified: EntityMap) => mergeDeep(base, modified)
+);
+
+/**
+ * Creates an object of selectors and projector functions bound to the given schema.
+ * @param schema The schema to bind the selectors and projectors to
+ */
+export function createCombinedSchemaSelectors<T>(
+  schema: schema.Entity
+): SchemaSelectors<T> {
+  return {
+    /**
+     * Select all entities, regardless of their schema, exported for convenience.
+     */
+    getNormalizedEntities: getCombinedNormalizedEntities,
+
+    /**
+     * Select all entities and perform a denormalization based on the given schema.
+     */
+    getEntities: createEntitiesSelector<T>(
+      schema,
+      getCombinedNormalizedEntities
+    ),
+
+    /**
+     * Uses the given schema to denormalize an entity by the given id
+     */
+    entityProjector: createEntityProjector<T>(schema),
+
+    /**
+     * Uses the given schema to denormalize all given entities
+     */
+    entitiesProjector: createEntitiesProjector<T>(schema)
+  };
+}
+
+export function isObject(item: any) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+export default function mergeDeep(target: any, source: any) {
+  let output = Object.assign({}, target);
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] });
+        else output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
 }
