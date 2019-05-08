@@ -97,7 +97,8 @@ function modifiedNormalized(state, action) {
                 });
             }
             return {
-                result: state.result
+                result: state.result,
+                entities: removeProperty(entities_3[key], id)
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
