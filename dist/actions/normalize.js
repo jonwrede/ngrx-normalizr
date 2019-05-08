@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var modified_normalize_1 = require("./modified-normalize");
 var normalizr_1 = require("normalizr");
 var ACTION_NAMESPACE = '[@@Normalize]';
 var NormalizeActionTypes = (function () {
@@ -126,23 +127,28 @@ function actionCreators(schema) {
             return new RemoveChildData({ id: id, parentSchema: schema, childSchema: childSchema, parentId: parentId });
         },
         modifiedSetData: function (data) {
-            return new SetData({ data: data, schema: schema });
+            return new modified_normalize_1.ModifiedSetData({ data: data, schema: schema });
         },
         modifiedAddData: function (data) {
-            return new AddData({ data: data, schema: schema });
+            return new modified_normalize_1.ModifiedAddData({ data: data, schema: schema });
         },
         modifiedAddChildData: function (data, childSchema, parentId) {
-            return new AddChildData({
+            return new modified_normalize_1.ModifiedAddChildData({
                 data: data,
                 parentSchema: schema,
                 childSchema: childSchema,
                 parentId: parentId
             });
         },
-        modifiedUpdateData: function (id, changes) { return new UpdateData({ id: id, schema: schema, changes: changes }); },
-        modifiedRemoveData: function (id, removeChildren) { return new RemoveData({ id: id, schema: schema, removeChildren: removeChildren }); },
+        modifiedUpdateData: function (id, changes) { return new modified_normalize_1.ModifiedUpdateData({ id: id, schema: schema, changes: changes }); },
+        modifiedRemoveData: function (id, removeChildren) { return new modified_normalize_1.ModifiedRemoveData({ id: id, schema: schema, removeChildren: removeChildren }); },
         modifiedRemoveChildData: function (id, childSchema, parentId) {
-            return new RemoveChildData({ id: id, parentSchema: schema, childSchema: childSchema, parentId: parentId });
+            return new modified_normalize_1.ModifiedRemoveChildData({
+                id: id,
+                parentSchema: schema,
+                childSchema: childSchema,
+                parentId: parentId
+            });
         }
     };
 }
