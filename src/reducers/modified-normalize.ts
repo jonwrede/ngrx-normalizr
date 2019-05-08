@@ -134,7 +134,7 @@ export function modifiedNormalized(
 
       return {
         result: state.result,
-        removeProperty(entities[key], id)
+        entities: removeProperty(entities[key], id)
       };
     }
 
