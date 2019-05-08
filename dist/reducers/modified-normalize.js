@@ -11,12 +11,13 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var normalize_1 = require("./normalize");
 var store_1 = require("@ngrx/store");
 var modified_normalize_1 = require("../actions/modified-normalize");
-var normalize_1 = require("./normalize");
+var normalize_2 = require("./normalize");
 var STATE_KEY = 'modifiedNormalized';
 function modifiedNormalized(state, action) {
-    if (state === void 0) { state = normalize_1.initialState; }
+    if (state === void 0) { state = normalize_2.initialState; }
     var _a;
     switch (action.type) {
         case modified_normalize_1.ModifiedNormalizeActionTypes.SET_DATA: {
@@ -39,7 +40,7 @@ function modifiedNormalized(state, action) {
         case modified_normalize_1.ModifiedNormalizeActionTypes.ADD_CHILD_DATA: {
             var _d = action.payload, result = _d.result, entities_2 = _d.entities, parentSchemaKey = _d.parentSchemaKey, parentProperty = _d.parentProperty, parentId = _d.parentId;
             var newEntities = __assign({}, state.entities);
-            if (normalize_1.getParentReferences(newEntities, action.payload)) {
+            if (normalize_2.getParentReferences(newEntities, action.payload)) {
                 (_a = newEntities[parentSchemaKey][parentId][parentProperty]).push.apply(_a, result);
             }
             return {
@@ -108,7 +109,7 @@ function modifiedNormalized(state, action) {
             if (!entity) {
                 return state;
             }
-            var parentRefs = normalize_1.getParentReferences(newEntities, action.payload);
+            var parentRefs = normalize_2.getParentReferences(newEntities, action.payload);
             if (parentRefs && parentRefs.indexOf(id) > -1) {
                 newEntities[parentSchemaKey][parentId][parentProperty].splice(parentRefs.indexOf(id), 1);
             }
@@ -128,9 +129,42 @@ exports.getModifiedResult = store_1.createSelector(getModifiedNormalizedState, f
 function createModifiedSchemaSelectors(schema) {
     return {
         getNormalizedEntities: exports.getModifiedNormalizedEntities,
-        getEntities: normalize_1.createEntitiesSelector(schema, exports.getModifiedNormalizedEntities),
-        entityProjector: normalize_1.createEntityProjector(schema),
-        entitiesProjector: normalize_1.createEntitiesProjector(schema)
+        getEntities: normalize_2.createEntitiesSelector(schema, exports.getModifiedNormalizedEntities),
+        entityProjector: normalize_2.createEntityProjector(schema),
+        entitiesProjector: normalize_2.createEntitiesProjector(schema)
     };
 }
 exports.createModifiedSchemaSelectors = createModifiedSchemaSelectors;
+exports.getCombinedNormalizedEntities = store_1.createSelector(normalize_1.getNormalizedEntities, exports.getModifiedNormalizedEntities, function (base, modified) { return mergeDeep(base, modified); });
+function createCombinedSchemaSelectors(schema) {
+    return {
+        getNormalizedEntities: exports.getCombinedNormalizedEntities,
+        getEntities: normalize_2.createEntitiesSelector(schema, exports.getCombinedNormalizedEntities),
+        entityProjector: normalize_2.createEntityProjector(schema),
+        entitiesProjector: normalize_2.createEntitiesProjector(schema)
+    };
+}
+exports.createCombinedSchemaSelectors = createCombinedSchemaSelectors;
+function isObject(item) {
+    return item && typeof item === 'object' && !Array.isArray(item);
+}
+exports.isObject = isObject;
+function mergeDeep(target, source) {
+    var output = Object.assign({}, target);
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach(function (key) {
+            var _a, _b;
+            if (isObject(source[key])) {
+                if (!(key in target))
+                    Object.assign(output, (_a = {}, _a[key] = source[key], _a));
+                else
+                    output[key] = mergeDeep(target[key], source[key]);
+            }
+            else {
+                Object.assign(output, (_b = {}, _b[key] = source[key], _b));
+            }
+        });
+    }
+    return output;
+}
+exports.default = mergeDeep;
