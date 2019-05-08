@@ -18,17 +18,17 @@ var normalize_2 = require("./normalize");
 var STATE_KEY = 'modifiedNormalized';
 function modifiedNormalized(state, action) {
     if (state === void 0) { state = normalize_2.initialState; }
-    var _a;
+    var _a, _b;
     switch (action.type) {
         case modified_normalize_1.ModifiedNormalizeActionTypes.SET_DATA: {
-            var _b = action.payload, result = _b.result, entities = _b.entities;
+            var _c = action.payload, result = _c.result, entities = _c.entities;
             return {
                 result: result,
                 entities: __assign({}, state.entities, entities)
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.ADD_DATA: {
-            var _c = action.payload, result = _c.result, entities_1 = _c.entities;
+            var _d = action.payload, result = _d.result, entities_1 = _d.entities;
             return {
                 result: result,
                 entities: Object.keys(entities_1).reduce(function (p, c) {
@@ -38,7 +38,7 @@ function modifiedNormalized(state, action) {
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.ADD_CHILD_DATA: {
-            var _d = action.payload, result = _d.result, entities_2 = _d.entities, parentSchemaKey = _d.parentSchemaKey, parentProperty = _d.parentProperty, parentId = _d.parentId;
+            var _e = action.payload, result = _e.result, entities_2 = _e.entities, parentSchemaKey = _e.parentSchemaKey, parentProperty = _e.parentProperty, parentId = _e.parentId;
             var newEntities = __assign({}, state.entities);
             if (normalize_2.getParentReferences(newEntities, action.payload)) {
                 (_a = newEntities[parentSchemaKey][parentId][parentProperty]).push.apply(_a, result);
@@ -52,7 +52,7 @@ function modifiedNormalized(state, action) {
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.UPDATE_DATA: {
-            var _e = action.payload, id = _e.id, key = _e.key, changes_1 = _e.changes, result = _e.result;
+            var _f = action.payload, id = _f.id, key = _f.key, changes_1 = _f.changes, result = _f.result;
             if (!state.entities[key] || !state.entities[key][id]) {
                 return state;
             }
@@ -80,7 +80,7 @@ function modifiedNormalized(state, action) {
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_DATA: {
-            var _f = action.payload, id = _f.id, key = _f.key, removeChildren = _f.removeChildren;
+            var _g = action.payload, id = _g.id, key = _g.key, removeChildren = _g.removeChildren;
             var entities_3 = __assign({}, state.entities);
             var entity_1 = entities_3[key][id];
             if (!entity_1) {
@@ -98,11 +98,11 @@ function modifiedNormalized(state, action) {
             }
             return {
                 result: state.result,
-                entities: removeProperty(entities_3[key], id)
+                entities: __assign({}, entities_3, (_b = {}, _b[key] = removeProperty(entities_3[key], id), _b))
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
-            var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;
+            var _h = action.payload, id = _h.id, childSchemaKey = _h.childSchemaKey, parentProperty = _h.parentProperty, parentSchemaKey = _h.parentSchemaKey, parentId = _h.parentId;
             var newEntities = __assign({}, state.entities);
             var entity = newEntities[childSchemaKey][id];
             if (!entity) {
