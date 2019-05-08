@@ -1,3 +1,11 @@
+import {
+  ModifiedSetData,
+  ModifiedAddData,
+  ModifiedAddChildData,
+  ModifiedRemoveData,
+  ModifiedRemoveChildData,
+  ModifiedUpdateData
+} from './modified-normalize';
 /**
  * Exports actions and an actionCreators creator of the ngrx-normalizr package.
  */
@@ -637,14 +645,14 @@ export function actionCreators<T>(
       new RemoveChildData({ id, parentSchema: schema, childSchema, parentId }),
 
     modifiedSetData: (data: NormalizeActionConfig<T>['data']) =>
-      new SetData<T>({ data, schema }),
+      new ModifiedSetData<T>({ data, schema }),
 
     /**
      * Action creator for the `AddData` action.
      * @returns A new instance of the `AddData` action with the given schema.
      */
     modifiedAddData: (data: NormalizeActionConfig<T>['data']) =>
-      new AddData<T>({ data, schema }),
+      new ModifiedAddData<T>({ data, schema }),
 
     /**
      * Action creator for the `AddChildData` action.
@@ -655,7 +663,7 @@ export function actionCreators<T>(
       childSchema: NormalizeChildActionConfig<C>['childSchema'],
       parentId: NormalizeChildActionConfig<C>['parentId']
     ) =>
-      new AddChildData<C>({
+      new ModifiedAddChildData<C>({
         data,
         parentSchema: schema,
         childSchema,
@@ -669,7 +677,7 @@ export function actionCreators<T>(
     modifiedUpdateData: (
       id: NormalizeUpdateActionConfig<T>['id'],
       changes: NormalizeUpdateActionConfig<T>['changes']
-    ) => new UpdateData({ id, schema, changes }),
+    ) => new ModifiedUpdateData({ id, schema, changes }),
 
     /**
      * Action creator for the `RemoveData` action.
@@ -678,7 +686,7 @@ export function actionCreators<T>(
     modifiedRemoveData: (
       id: NormalizeRemoveActionConfig['id'],
       removeChildren?: NormalizeRemoveActionConfig['removeChildren']
-    ) => new RemoveData({ id, schema, removeChildren }),
+    ) => new ModifiedRemoveData({ id, schema, removeChildren }),
 
     /**
      * Action creator for the `RemoveChildData` action.
@@ -689,7 +697,12 @@ export function actionCreators<T>(
       childSchema: NormalizeRemoveChildActionConfig['childSchema'],
       parentId: NormalizeRemoveChildActionConfig['parentId']
     ) =>
-      new RemoveChildData({ id, parentSchema: schema, childSchema, parentId })
+      new ModifiedRemoveChildData({
+        id,
+        parentSchema: schema,
+        childSchema,
+        parentId
+      })
   };
 }
 
