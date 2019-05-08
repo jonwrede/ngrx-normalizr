@@ -132,11 +132,9 @@ export function modifiedNormalized(
         );
       }
 
-      delete entities[key][id];
-
       return {
         result: state.result,
-        entities
+        removeProperty(entities[key], id)
       };
     }
 
@@ -302,3 +300,12 @@ export default function mergeDeep(target: any, source: any) {
   }
   return output;
 }
+
+const removeProperty = (obj: any, property: string | number) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (key !== property) {
+      return { ...acc, [key]: obj[key] };
+    }
+    return acc;
+  }, {});
+};

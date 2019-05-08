@@ -5,6 +5,10 @@ import { NormalizedEntityState } from './normalize';
 export declare function modifiedNormalized(state: NormalizedEntityState, action: any): {
     result: any;
     entities: any;
+} | {
+    result: string[];
+    removeProperty(entities: any, [key]: [any], id: any): any;
+    entities?: undefined;
 };
 export declare const getModifiedNormalizedEntities: MemoizedSelector<any, EntityMap>;
 export declare const getModifiedResult: MemoizedSelector<any, string[]>;

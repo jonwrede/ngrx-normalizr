@@ -96,10 +96,8 @@ function modifiedNormalized(state, action) {
                     }
                 });
             }
-            delete entities_3[key][id];
             return {
-                result: state.result,
-                entities: entities_3
+                result: state.result
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
@@ -168,3 +166,12 @@ function mergeDeep(target, source) {
     return output;
 }
 exports.default = mergeDeep;
+var removeProperty = function (obj, property) {
+    return Object.keys(obj).reduce(function (acc, key) {
+        var _a;
+        if (key !== property) {
+            return __assign({}, acc, (_a = {}, _a[key] = obj[key], _a));
+        }
+        return acc;
+    }, {});
+};
