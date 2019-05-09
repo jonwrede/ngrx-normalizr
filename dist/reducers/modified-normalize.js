@@ -12,8 +12,8 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var normalize_1 = require("./normalize");
-var immutable_1 = require("immutable");
 var store_1 = require("@ngrx/store");
+var immutable_1 = require("immutable");
 var modified_normalize_1 = require("../actions/modified-normalize");
 var normalize_2 = require("./normalize");
 var STATE_KEY = 'modifiedNormalized';
@@ -87,7 +87,8 @@ function modifiedNormalized(state, action) {
             if (!entity_1) {
                 return state;
             }
-            return newState_1.withMutations(function (map) {
+            return newState_1
+                .withMutations(function (map) {
                 if (removeChildren_1) {
                     Object.entries(removeChildren_1).map(function (_a) {
                         var keyInner = _a[0], entityProperty = _a[1];
@@ -101,7 +102,8 @@ function modifiedNormalized(state, action) {
                     });
                 }
                 map.deleteIn(['entities', key_1, id_1]);
-            });
+            })
+                .toJS();
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
             var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;

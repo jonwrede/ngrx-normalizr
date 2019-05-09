@@ -1,12 +1,11 @@
 import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
-import { fromJS } from 'immutable';
 /**
  * Exports reducers and selectors of the ngrx-normalizr package.
  */
 
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { schema } from 'normalizr';
-
+import { fromJS } from 'immutable';
 import { ModifiedNormalizeActionTypes } from '../actions/modified-normalize';
 import {
   NormalizeChildActionPayload,
@@ -120,23 +119,25 @@ export function modifiedNormalized(
         return state;
       }
 
-      return newState.withMutations((map: any) => {
-        if (removeChildren) {
-          Object.entries(removeChildren).map(
-            ([keyInner, entityProperty]: [string, string]) => {
-              const child = entity.get(entityProperty);
-              /* istanbul ignore else */
-              if (child && newState.getIn(['entities', keyInner])) {
-                const ids = Array.isArray(child) ? child : [child];
-                ids.forEach((oldId: string) =>
-                  map.deleteIn(['entities', keyInner, oldId])
-                );
+      return newState
+        .withMutations((map: any) => {
+          if (removeChildren) {
+            Object.entries(removeChildren).map(
+              ([keyInner, entityProperty]: [string, string]) => {
+                const child = entity.get(entityProperty);
+                /* istanbul ignore else */
+                if (child && newState.getIn(['entities', keyInner])) {
+                  const ids = Array.isArray(child) ? child : [child];
+                  ids.forEach((oldId: string) =>
+                    map.deleteIn(['entities', keyInner, oldId])
+                  );
+                }
               }
-            }
-          );
-        }
-        map.deleteIn(['entities', key, id]);
-      });
+            );
+          }
+          map.deleteIn(['entities', key, id]);
+        })
+        .toJS();
     }
 
     case ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
