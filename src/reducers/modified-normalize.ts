@@ -114,7 +114,7 @@ export function modifiedNormalized(
     case ModifiedNormalizeActionTypes.REMOVE_DATA: {
       const { id, key, removeChildren } = action.payload;
       const newState = fromJS(state);
-      const entity = newState.getIn([key, id]);
+      const entity = newState.getIn(['entities', key, id]);
 
       if (!entity) {
         return state;
