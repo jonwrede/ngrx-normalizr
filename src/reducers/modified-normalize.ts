@@ -1,4 +1,5 @@
 import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
+import { fromJS } from 'immutable';
 /**
  * Exports reducers and selectors of the ngrx-normalizr package.
  */
@@ -112,30 +113,28 @@ export function modifiedNormalized(
 
     case ModifiedNormalizeActionTypes.REMOVE_DATA: {
       const { id, key, removeChildren } = action.payload;
-      const entities = { ...state.entities };
-      const entity = entities[key][id];
+      const newState = fromJS(state);
+      const entity = newState.getIn([key, id]);
 
       if (!entity) {
         return state;
       }
 
-      if (removeChildren) {
-        Object.entries(removeChildren).map(
-          ([key, entityProperty]: [string, string]) => {
-            const child = entity[entityProperty];
-            /* istanbul ignore else */
-            if (child && entities[key]) {
-              const ids = Array.isArray(child) ? child : [child];
-              ids.forEach((oldId: string) => delete entities[key][oldId]);
+      return newState.withMutations((map: any) => {
+        if (removeChildren) {
+          Object.entries(removeChildren).map(
+            ([keyInner, entityProperty]: [string, string]) => {
+              const child = entity[entityProperty];
+              /* istanbul ignore else */
+              if (child && newState.get(key)) {
+                const ids = Array.isArray(child) ? child : [child];
+                ids.forEach((oldId: string) => map.deleteIn([keyInner, oldId]));
+              }
             }
-          }
-        );
-      }
-
-      return {
-        result: state.result,
-        entities: { ...entities, [key]: removeProperty(entities[key], id) }
-      };
+          );
+        }
+        map.deleteIn([key, id]);
+      });
     }
 
     case ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
@@ -300,12 +299,3 @@ export default function mergeDeep(target: any, source: any) {
   }
   return output;
 }
-
-const removeProperty = (obj: any, property: string | number) => {
-  return Object.keys(obj).reduce((acc, key) => {
-    if (key !== property) {
-      return { ...acc, [key]: obj[key] };
-    }
-    return acc;
-  }, {});
-};
