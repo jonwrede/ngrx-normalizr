@@ -92,7 +92,7 @@ function modifiedNormalized(state, action) {
                 if (removeChildren_1) {
                     Object.entries(removeChildren_1).map(function (_a) {
                         var keyInner = _a[0], entityProperty = _a[1];
-                        var child = entity_1.get(entityProperty);
+                        var child = entity_1.get(entityProperty).toJS();
                         if (child && newState_1.getIn(['entities', keyInner])) {
                             var ids = Array.isArray(child) ? child : [child];
                             ids.forEach(function (oldId) {
