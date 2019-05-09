@@ -115,7 +115,7 @@ export function modifiedNormalized(
       const { id, key, removeChildren } = action.payload;
       const newState = fromJS(state);
       const entity = newState.getIn(['entities', key, id]);
-
+      console.log(entity, newState);
       if (!entity) {
         return state;
       }
@@ -136,6 +136,7 @@ export function modifiedNormalized(
           );
         }
         map.deleteIn(['entities', key, id]);
+        return map;
       });
     }
 
