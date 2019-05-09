@@ -25,7 +25,9 @@
 		"immutable": "^4.0.0-rc.12",
 		"normalizr": "^3.3.0"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"immutable": "^4.0.0-rc.12"
+	},
 	"devDependencies": {
 		"@angular/compiler": "^7.2.14",
 		"@angular/compiler-cli": "^7.2.14",

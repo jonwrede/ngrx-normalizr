@@ -115,7 +115,7 @@ export function modifiedNormalized(
       const { id, key, removeChildren } = action.payload;
       const newState = fromJS(state);
       const entity = newState.getIn(['entities', key, id]);
-      console.log(entity, newState);
+
       if (!entity) {
         return state;
       }
@@ -126,7 +126,7 @@ export function modifiedNormalized(
             ([keyInner, entityProperty]: [string, string]) => {
               const child = entity[entityProperty];
               /* istanbul ignore else */
-              if (child && newState.get(key)) {
+              if (child && newState.getIn(['entities', key])) {
                 const ids = Array.isArray(child) ? child : [child];
                 ids.forEach((oldId: string) =>
                   map.deleteIn(['entities', keyInner, oldId])
@@ -136,7 +136,6 @@ export function modifiedNormalized(
           );
         }
         map.deleteIn(['entities', key, id]);
-        return map;
       });
     }
 
