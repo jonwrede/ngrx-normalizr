@@ -125,7 +125,7 @@ export function modifiedNormalized(
           if (removeChildren) {
             Object.entries(removeChildren).map(
               ([keyInner, entityProperty]: [string, string]) => {
-                let child = entity.get(entityProperty);
+                let child = entity.get(entityProperty).toJS();
                 /* istanbul ignore else */
                 if (child && newState.getIn(['entities', keyInner])) {
                   child = Object.values(child);
