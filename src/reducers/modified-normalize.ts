@@ -126,7 +126,7 @@ export function modifiedNormalized(
             ([keyInner, entityProperty]: [string, string]) => {
               const child = entity[entityProperty];
               /* istanbul ignore else */
-              if (child && newState.getIn(['entities', key])) {
+              if (child && newState.getIn(['entities', keyInner])) {
                 const ids = Array.isArray(child) ? child : [child];
                 ids.forEach((oldId: string) =>
                   map.deleteIn(['entities', keyInner, oldId])

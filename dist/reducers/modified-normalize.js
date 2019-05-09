@@ -92,7 +92,7 @@ function modifiedNormalized(state, action) {
                     Object.entries(removeChildren_1).map(function (_a) {
                         var keyInner = _a[0], entityProperty = _a[1];
                         var child = entity_1[entityProperty];
-                        if (child && newState_1.getIn(['entities', key_1])) {
+                        if (child && newState_1.getIn(['entities', keyInner])) {
                             var ids = Array.isArray(child) ? child : [child];
                             ids.forEach(function (oldId) {
                                 return map.deleteIn(['entities', keyInner, oldId]);
