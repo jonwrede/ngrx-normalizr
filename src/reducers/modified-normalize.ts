@@ -5,7 +5,6 @@ import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
 
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { schema } from 'normalizr';
-import { fromJS } from 'immutable';
 import { ModifiedNormalizeActionTypes } from '../actions/modified-normalize';
 import {
   NormalizeChildActionPayload,
@@ -112,32 +111,34 @@ export function modifiedNormalized(
 
     case ModifiedNormalizeActionTypes.REMOVE_DATA: {
       const { id, key, removeChildren } = action.payload;
-      const newState = fromJS(state);
-      const entity = newState.getIn(['entities', key, id]);
+      let entities = { ...state.entities };
+      const entity = entities[key][id];
 
       if (!entity) {
         return state;
       }
 
-      return newState
-        .withMutations((map: any) => {
-          if (removeChildren) {
-            Object.entries(removeChildren).map(
-              ([keyInner, entityProperty]: [string, string]) => {
-                const child = entity.get(entityProperty).toJS();
-                /* istanbul ignore else */
-                if (child && newState.getIn(['entities', keyInner])) {
-                  const ids = Array.isArray(child) ? child : [child];
-                  ids.forEach((oldId: string) =>
-                    map.deleteIn(['entities', keyInner, oldId])
-                  );
-                }
-              }
-            );
+      if (removeChildren) {
+        Object.entries(removeChildren).map(
+          ([keyInner, entityProperty]: [string, string]) => {
+            const child = entity[entityProperty];
+            /* istanbul ignore else */
+            if (child && entities[keyInner]) {
+              const ids = Array.isArray(child) ? child : [child];
+              ids.forEach((oldId: string) => {
+                entities = {
+                  ...entities,
+                  [keyInner]: { oldId, ...entities[keyInner] }
+                };
+              });
+            }
           }
-          map.deleteIn(['entities', key, id]);
-        })
-        .toJS();
+        );
+      }
+      return {
+        ...state,
+        entities: { ...entities, key: { key, ...entities[key] } }
+      };
     }
 
     case ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {

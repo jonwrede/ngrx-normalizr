@@ -13,7 +13,6 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var normalize_1 = require("./normalize");
 var store_1 = require("@ngrx/store");
-var immutable_1 = require("immutable");
 var modified_normalize_1 = require("../actions/modified-normalize");
 var normalize_2 = require("./normalize");
 var STATE_KEY = 'modifiedNormalized';
@@ -81,29 +80,26 @@ function modifiedNormalized(state, action) {
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_DATA: {
-            var _f = action.payload, id_1 = _f.id, key_1 = _f.key, removeChildren_1 = _f.removeChildren;
-            var newState_1 = immutable_1.fromJS(state);
-            var entity_1 = newState_1.getIn(['entities', key_1, id_1]);
+            var _f = action.payload, id = _f.id, key = _f.key, removeChildren = _f.removeChildren;
+            var entities_3 = __assign({}, state.entities);
+            var entity_1 = entities_3[key][id];
             if (!entity_1) {
                 return state;
             }
-            return newState_1
-                .withMutations(function (map) {
-                if (removeChildren_1) {
-                    Object.entries(removeChildren_1).map(function (_a) {
-                        var keyInner = _a[0], entityProperty = _a[1];
-                        var child = entity_1.get(entityProperty).toJS();
-                        if (child && newState_1.getIn(['entities', keyInner])) {
-                            var ids = Array.isArray(child) ? child : [child];
-                            ids.forEach(function (oldId) {
-                                return map.deleteIn(['entities', keyInner, oldId]);
-                            });
-                        }
-                    });
-                }
-                map.deleteIn(['entities', key_1, id_1]);
-            })
-                .toJS();
+            if (removeChildren) {
+                Object.entries(removeChildren).map(function (_a) {
+                    var keyInner = _a[0], entityProperty = _a[1];
+                    var child = entity_1[entityProperty];
+                    if (child && entities_3[keyInner]) {
+                        var ids = Array.isArray(child) ? child : [child];
+                        ids.forEach(function (oldId) {
+                            var _a;
+                            entities_3 = __assign({}, entities_3, (_a = {}, _a[keyInner] = __assign({ oldId: oldId }, entities_3[keyInner]), _a));
+                        });
+                    }
+                });
+            }
+            return __assign({}, state, { entities: __assign({}, entities_3, { key: __assign({ key: key }, entities_3[key]) }) });
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
             var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;
