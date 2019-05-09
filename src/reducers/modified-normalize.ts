@@ -111,7 +111,7 @@ export function modifiedNormalized(
 
     case ModifiedNormalizeActionTypes.REMOVE_DATA: {
       const { id, key, removeChildren } = action.payload;
-      let entities = { ...state.entities };
+      const entities = { ...state.entities };
       const entity = entities[key][id];
 
       if (!entity) {
@@ -126,18 +126,16 @@ export function modifiedNormalized(
             if (child && entities[keyInner]) {
               const ids = Array.isArray(child) ? child : [child];
               ids.forEach((oldId: string) => {
-                entities = {
-                  ...entities,
-                  [keyInner]: { oldId, ...entities[keyInner] }
-                };
+                delete entities[keyInner][oldId];
               });
             }
           }
         );
       }
+      delete entities[key][id];
       return {
         ...state,
-        entities: { ...entities, key: { key, ...entities[key] } }
+        entities: { ...entities }
       };
     }
 

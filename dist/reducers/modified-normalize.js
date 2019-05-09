@@ -93,13 +93,13 @@ function modifiedNormalized(state, action) {
                     if (child && entities_3[keyInner]) {
                         var ids = Array.isArray(child) ? child : [child];
                         ids.forEach(function (oldId) {
-                            var _a;
-                            entities_3 = __assign({}, entities_3, (_a = {}, _a[keyInner] = __assign({ oldId: oldId }, entities_3[keyInner]), _a));
+                            delete entities_3[keyInner][oldId];
                         });
                     }
                 });
             }
-            return __assign({}, state, { entities: __assign({}, entities_3, { key: __assign({ key: key }, entities_3[key]) }) });
+            delete entities_3[key][id];
+            return __assign({}, state, { entities: __assign({}, entities_3) });
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
             var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;
