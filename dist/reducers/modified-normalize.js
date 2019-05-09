@@ -88,18 +88,20 @@ function modifiedNormalized(state, action) {
             }
             if (removeChildren) {
                 Object.entries(removeChildren).map(function (_a) {
-                    var keyInner = _a[0], entityProperty = _a[1];
+                    var key = _a[0], entityProperty = _a[1];
                     var child = entity_1[entityProperty];
-                    if (child && entities_3[keyInner]) {
+                    if (child && entities_3[key]) {
+                        child = Object.values(child);
                         var ids = Array.isArray(child) ? child : [child];
-                        ids.forEach(function (oldId) {
-                            delete entities_3[keyInner][oldId];
-                        });
+                        ids.forEach(function (oldId) { return delete entities_3[key][oldId]; });
                     }
                 });
             }
             delete entities_3[key][id];
-            return __assign({}, state, { entities: __assign({}, entities_3) });
+            return {
+                result: state.result,
+                entities: entities_3
+            };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
             var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;

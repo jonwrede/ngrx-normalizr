@@ -5,6 +5,7 @@ import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
 
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { schema } from 'normalizr';
+
 import { ModifiedNormalizeActionTypes } from '../actions/modified-normalize';
 import {
   NormalizeChildActionPayload,
@@ -120,22 +121,23 @@ export function modifiedNormalized(
 
       if (removeChildren) {
         Object.entries(removeChildren).map(
-          ([keyInner, entityProperty]: [string, string]) => {
-            const child = entity[entityProperty];
+          ([key, entityProperty]: [string, string]) => {
+            let child = entity[entityProperty];
             /* istanbul ignore else */
-            if (child && entities[keyInner]) {
+            if (child && entities[key]) {
+              child = Object.values(child);
               const ids = Array.isArray(child) ? child : [child];
-              ids.forEach((oldId: string) => {
-                delete entities[keyInner][oldId];
-              });
+              ids.forEach((oldId: string) => delete entities[key][oldId]);
             }
           }
         );
       }
+
       delete entities[key][id];
+
       return {
-        ...state,
-        entities: { ...entities }
+        result: state.result,
+        entities
       };
     }
 
