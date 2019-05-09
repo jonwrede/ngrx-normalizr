@@ -21,12 +21,11 @@
 	},
 	"license": "MIT",
 	"peerDependencies": {
-		"@ngrx/store": "^7.3.0"
-	},
-	"dependencies": {
+		"@ngrx/store": "^7.3.0",
 		"immutable": "^4.0.0-rc.12",
 		"normalizr": "^3.3.0"
 	},
+	"dependencies": {},
 	"devDependencies": {
 		"@angular/compiler": "^7.2.14",
 		"@angular/compiler-cli": "^7.2.14",

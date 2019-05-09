@@ -128,12 +128,14 @@ export function modifiedNormalized(
               /* istanbul ignore else */
               if (child && newState.get(key)) {
                 const ids = Array.isArray(child) ? child : [child];
-                ids.forEach((oldId: string) => map.deleteIn([keyInner, oldId]));
+                ids.forEach((oldId: string) =>
+                  map.deleteIn(['entities', keyInner, oldId])
+                );
               }
             }
           );
         }
-        map.deleteIn([key, id]);
+        map.deleteIn(['entities', key, id]);
       });
     }
 

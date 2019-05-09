@@ -94,11 +94,13 @@ function modifiedNormalized(state, action) {
                         var child = entity_1[entityProperty];
                         if (child && newState_1.get(key_1)) {
                             var ids = Array.isArray(child) ? child : [child];
-                            ids.forEach(function (oldId) { return map.deleteIn([keyInner, oldId]); });
+                            ids.forEach(function (oldId) {
+                                return map.deleteIn(['entities', keyInner, oldId]);
+                            });
                         }
                     });
                 }
-                map.deleteIn([key_1, id_1]);
+                map.deleteIn(['entities', key_1, id_1]);
             });
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
