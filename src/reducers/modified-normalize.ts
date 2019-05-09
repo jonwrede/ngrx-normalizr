@@ -1,4 +1,5 @@
 import { EntityMap, SchemaSelectors, getNormalizedEntities } from './normalize';
+import { fromJS } from 'immutable';
 /**
  * Exports reducers and selectors of the ngrx-normalizr package.
  */
@@ -112,33 +113,33 @@ export function modifiedNormalized(
 
     case ModifiedNormalizeActionTypes.REMOVE_DATA: {
       const { id, key, removeChildren } = action.payload;
-      const entities = { ...state.entities };
-      const entity = entities[key][id];
+      const newState = fromJS(state);
+      const entity = newState.getIn(['entities', key, id]);
 
       if (!entity) {
         return state;
       }
 
-      if (removeChildren) {
-        Object.entries(removeChildren).map(
-          ([key, entityProperty]: [string, string]) => {
-            let child = entity[entityProperty];
-            /* istanbul ignore else */
-            if (child && entities[key]) {
-              child = Object.values(child);
-              const ids = Array.isArray(child) ? child : [child];
-              ids.forEach((oldId: string) => delete entities[key][oldId]);
-            }
+      return newState
+        .withMutations((map: any) => {
+          if (removeChildren) {
+            Object.entries(removeChildren).map(
+              ([keyInner, entityProperty]: [string, string]) => {
+                let child = entity.get(entityProperty);
+                /* istanbul ignore else */
+                if (child && newState.getIn(['entities', keyInner])) {
+                  child = Object.values(child);
+                  const ids = Array.isArray(child) ? child : [child];
+                  ids.forEach((oldId: string) =>
+                    map.deleteIn(['entities', keyInner, oldId])
+                  );
+                }
+              }
+            );
           }
-        );
-      }
-
-      delete entities[key][id];
-
-      return {
-        result: state.result,
-        entities
-      };
+          map.deleteIn(['entities', key, id]);
+        })
+        .toJS();
     }
 
     case ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {

@@ -12,6 +12,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var normalize_1 = require("./normalize");
+var immutable_1 = require("immutable");
 var store_1 = require("@ngrx/store");
 var modified_normalize_1 = require("../actions/modified-normalize");
 var normalize_2 = require("./normalize");
@@ -80,28 +81,30 @@ function modifiedNormalized(state, action) {
             };
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_DATA: {
-            var _f = action.payload, id = _f.id, key = _f.key, removeChildren = _f.removeChildren;
-            var entities_3 = __assign({}, state.entities);
-            var entity_1 = entities_3[key][id];
+            var _f = action.payload, id_1 = _f.id, key_1 = _f.key, removeChildren_1 = _f.removeChildren;
+            var newState_1 = immutable_1.fromJS(state);
+            var entity_1 = newState_1.getIn(['entities', key_1, id_1]);
             if (!entity_1) {
                 return state;
             }
-            if (removeChildren) {
-                Object.entries(removeChildren).map(function (_a) {
-                    var key = _a[0], entityProperty = _a[1];
-                    var child = entity_1[entityProperty];
-                    if (child && entities_3[key]) {
-                        child = Object.values(child);
-                        var ids = Array.isArray(child) ? child : [child];
-                        ids.forEach(function (oldId) { return delete entities_3[key][oldId]; });
-                    }
-                });
-            }
-            delete entities_3[key][id];
-            return {
-                result: state.result,
-                entities: entities_3
-            };
+            return newState_1
+                .withMutations(function (map) {
+                if (removeChildren_1) {
+                    Object.entries(removeChildren_1).map(function (_a) {
+                        var keyInner = _a[0], entityProperty = _a[1];
+                        var child = entity_1.get(entityProperty);
+                        if (child && newState_1.getIn(['entities', keyInner])) {
+                            child = Object.values(child);
+                            var ids = Array.isArray(child) ? child : [child];
+                            ids.forEach(function (oldId) {
+                                return map.deleteIn(['entities', keyInner, oldId]);
+                            });
+                        }
+                    });
+                }
+                map.deleteIn(['entities', key_1, id_1]);
+            })
+                .toJS();
         }
         case modified_normalize_1.ModifiedNormalizeActionTypes.REMOVE_CHILD_DATA: {
             var _g = action.payload, id = _g.id, childSchemaKey = _g.childSchemaKey, parentProperty = _g.parentProperty, parentSchemaKey = _g.parentSchemaKey, parentId = _g.parentId;
