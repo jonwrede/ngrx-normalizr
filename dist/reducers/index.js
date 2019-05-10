@@ -29,12 +29,10 @@ function metaReducer(reducer) {
         return actions_1.actionCreator().match(action, {
             SET: function (value) {
                 var data = value.data, schema = value.schema;
-                console.log(data, schema);
                 var normalizedData = normalizr_1.normalize(data, [schema]);
-                console.log(normalizedData);
                 Object.entries(normalizedData.entities).forEach(function (_a) {
                     var key = _a[0], dict = _a[1];
-                    return (draft[key].modified = dict);
+                    return (draft[key].original = dict);
                 });
             },
             SET_MODFIFIED: function (value) {
