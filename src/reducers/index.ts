@@ -36,7 +36,9 @@ export function metaReducer(reducer: ActionReducer<any>): ActionReducer<any> {
     actionCreator<any>().match(action, {
       SET: (value: { data: any[]; schema: schema.Entity }) => {
         const { data, schema } = value;
-        const normalizedData = normalize(data, schema);
+        console.log(data, schema);
+        const normalizedData = normalize(data, [schema]);
+        console.log(normalizedData);
         Object.entries(normalizedData.entities).forEach(
           ([key, dict]: [string, { [id: string]: object }]) =>
             (draft[key].modified = dict)
