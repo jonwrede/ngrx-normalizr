@@ -3,13 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var normalizr_1 = require("normalizr");
 var immer_1 = require("immer");
 var actions_1 = require("../actions");
-function initialState() {
-    return {
-        original: {},
-        modified: {}
-    };
-}
-exports.initialState = initialState;
+exports.initialState = {
+    original: {},
+    modified: {}
+};
 function reducer(key) {
     return immer_1.default(function (draft, action) {
         var _a;
@@ -24,7 +21,7 @@ function reducer(key) {
             _a['CLEAR_MODFIFIED_' + key] = function () { },
             _a.default = function () { },
             _a));
-    }, initialState);
+    }, exports.initialState);
 }
 exports.reducer = reducer;
 function metaReducer(reducer) {

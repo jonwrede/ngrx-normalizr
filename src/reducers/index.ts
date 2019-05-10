@@ -8,12 +8,10 @@ export interface NMEntityState<T> {
   modified: { [id: string]: T };
 }
 
-export function initialState<T>(): NMEntityState<T> {
-  return {
-    original: {},
-    modified: {}
-  };
-}
+export const initialState = {
+  original: {},
+  modified: {}
+};
 
 export function reducer<T>(key: string) {
   return produce(
