@@ -1,8 +1,8 @@
-/**
- * Exports actions, reducers and selectors of the ngrx-normalizr package.
- */
+import { NMEntityState } from './reducers/index';
 
-export * from './actions/normalize';
-export * from './actions/modified-normalize';
-export * from './reducers/normalize';
-export * from './reducers/modified-normalize';
+export interface NMState {
+  [id: string]: NMEntityState<object>;
+}
+
+export * from './reducers';
+export * from './actions';

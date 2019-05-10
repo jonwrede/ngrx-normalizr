@@ -1,4 +1,6 @@
-export * from './actions/normalize';
-export * from './actions/modified-normalize';
-export * from './reducers/normalize';
-export * from './reducers/modified-normalize';
+import { NMEntityState } from './reducers/index';
+export interface NMState {
+    [id: string]: NMEntityState<object>;
+}
+export * from './reducers';
+export * from './actions';
