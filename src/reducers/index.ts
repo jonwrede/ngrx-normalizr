@@ -73,7 +73,7 @@ export function metaReducer(reducer: ActionReducer<any>): ActionReducer<any> {
         );
       },
       default: () => {
-        reducer(draft, action);
+        return reducer(draft, action);
       }
     })
   );

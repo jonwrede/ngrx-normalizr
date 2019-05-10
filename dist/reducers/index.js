@@ -66,7 +66,7 @@ function metaReducer(reducer) {
                 });
             },
             default: function () {
-                reducer(draft, action);
+                return reducer(draft, action);
             }
         });
     });
