@@ -1,5 +1,5 @@
 import { schema } from 'normalizr';
-export declare function entityActionCreator<T>(schema: schema.Entity): import("unionize").Unionized<{
+export declare function entityActionCreator<T>(key: string): import("unionize").Unionized<{
     [x: string]: {};
 }, import("unionize").SingleValueVariants<{
     [x: string]: {};

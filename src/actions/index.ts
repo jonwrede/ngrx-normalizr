@@ -1,17 +1,17 @@
 import { schema } from 'normalizr';
 import { unionize, ofType } from 'unionize';
 
-export function entityActionCreator<T>(schema: schema.Entity) {
+export function entityActionCreator<T>(key: string) {
   return unionize(
     {
-      ['SET_' + schema.key]: ofType<T[]>(),
-      ['ADD_' + schema.key]: ofType<T[]>(),
-      ['DELETE_' + schema.key]: ofType<{ id: string }>(),
-      ['CLEAR_' + schema.key]: {},
-      ['SET_MODFIFIED_' + schema.key]: ofType<T[]>(),
-      ['ADD_MODFIFIED_' + schema.key]: ofType<T[]>(),
-      ['DELETE_MODFIFIED_' + schema.key]: ofType<{ id: string }>(),
-      ['CLEAR_MODFIFIED_' + schema.key]: {}
+      ['SET_' + key]: ofType<T[]>(),
+      ['ADD_' + key]: ofType<T[]>(),
+      ['DELETE_' + key]: ofType<{ id: string }>(),
+      ['CLEAR_' + key]: {},
+      ['SET_MODFIFIED_' + key]: ofType<T[]>(),
+      ['ADD_MODFIFIED_' + key]: ofType<T[]>(),
+      ['DELETE_MODFIFIED_' + key]: ofType<{ id: string }>(),
+      ['CLEAR_MODFIFIED_' + key]: {}
     },
     {
       tag: 'type',

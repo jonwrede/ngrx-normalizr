@@ -10,18 +10,18 @@ function initialState() {
     };
 }
 exports.initialState = initialState;
-function reducer(schema) {
+function reducer(key) {
     return immer_1.default(function (draft, action) {
         var _a;
-        return actions_1.entityActionCreator(schema).match(action, (_a = {},
-            _a['SET_' + schema.key] = function (data) { },
-            _a['ADD_' + schema.key] = function (data) { },
-            _a['DELETE_' + schema.key] = function (id) { },
-            _a['CLEAR_' + schema.key] = function () { },
-            _a['SET_MODFIFIED_' + schema.key] = function (data) { },
-            _a['ADD_MODFIFIED_' + schema.key] = function (data) { },
-            _a['DELETE_MODFIFIED_' + schema.key] = function (id) { },
-            _a['CLEAR_MODFIFIED_' + schema.key] = function () { },
+        return actions_1.entityActionCreator(key).match(action, (_a = {},
+            _a['SET_' + key] = function (data) { },
+            _a['ADD_' + key] = function (data) { },
+            _a['DELETE_' + key] = function (id) { },
+            _a['CLEAR_' + key] = function () { },
+            _a['SET_MODFIFIED_' + key] = function (data) { },
+            _a['ADD_MODFIFIED_' + key] = function (data) { },
+            _a['DELETE_MODFIFIED_' + key] = function (id) { },
+            _a['CLEAR_MODFIFIED_' + key] = function () { },
             _a.default = function () { },
             _a));
     }, initialState);

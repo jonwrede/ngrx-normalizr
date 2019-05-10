@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var unionize_1 = require("unionize");
-function entityActionCreator(schema) {
+function entityActionCreator(key) {
     var _a;
     return unionize_1.unionize((_a = {},
-        _a['SET_' + schema.key] = unionize_1.ofType(),
-        _a['ADD_' + schema.key] = unionize_1.ofType(),
-        _a['DELETE_' + schema.key] = unionize_1.ofType(),
-        _a['CLEAR_' + schema.key] = {},
-        _a['SET_MODFIFIED_' + schema.key] = unionize_1.ofType(),
-        _a['ADD_MODFIFIED_' + schema.key] = unionize_1.ofType(),
-        _a['DELETE_MODFIFIED_' + schema.key] = unionize_1.ofType(),
-        _a['CLEAR_MODFIFIED_' + schema.key] = {},
+        _a['SET_' + key] = unionize_1.ofType(),
+        _a['ADD_' + key] = unionize_1.ofType(),
+        _a['DELETE_' + key] = unionize_1.ofType(),
+        _a['CLEAR_' + key] = {},
+        _a['SET_MODFIFIED_' + key] = unionize_1.ofType(),
+        _a['ADD_MODFIFIED_' + key] = unionize_1.ofType(),
+        _a['DELETE_MODFIFIED_' + key] = unionize_1.ofType(),
+        _a['CLEAR_MODFIFIED_' + key] = {},
         _a), {
         tag: 'type',
         value: 'payload'

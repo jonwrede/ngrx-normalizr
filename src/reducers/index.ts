@@ -15,18 +15,18 @@ export function initialState<T>(): NMEntityState<T> {
   };
 }
 
-export function reducer<T>(schema: schema.Entity) {
+export function reducer<T>(key: string) {
   return produce(
     (draft, action) =>
-      entityActionCreator<T>(schema).match(action, {
-        ['SET_' + schema.key]: (data: T[]) => {},
-        ['ADD_' + schema.key]: (data: T[]) => {},
-        ['DELETE_' + schema.key]: (id: string) => {},
-        ['CLEAR_' + schema.key]: () => {},
-        ['SET_MODFIFIED_' + schema.key]: (data: T[]) => {},
-        ['ADD_MODFIFIED_' + schema.key]: (data: T[]) => {},
-        ['DELETE_MODFIFIED_' + schema.key]: (id: string) => {},
-        ['CLEAR_MODFIFIED_' + schema.key]: () => {},
+      entityActionCreator<T>(key).match(action, {
+        ['SET_' + key]: (data: T[]) => {},
+        ['ADD_' + key]: (data: T[]) => {},
+        ['DELETE_' + key]: (id: string) => {},
+        ['CLEAR_' + key]: () => {},
+        ['SET_MODFIFIED_' + key]: (data: T[]) => {},
+        ['ADD_MODFIFIED_' + key]: (data: T[]) => {},
+        ['DELETE_MODFIFIED_' + key]: (id: string) => {},
+        ['CLEAR_MODFIFIED_' + key]: () => {},
         default: () => {}
       }),
     initialState
