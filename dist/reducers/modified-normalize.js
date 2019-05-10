@@ -139,7 +139,11 @@ function createModifiedSchemaSelectors(schema) {
     };
 }
 exports.createModifiedSchemaSelectors = createModifiedSchemaSelectors;
-exports.getCombinedNormalizedEntities = store_1.createSelector(normalize_1.getNormalizedEntities, exports.getModifiedNormalizedEntities, function (base, modified) { return mergeDeep(base, modified); });
+exports.getCombinedNormalizedEntities = store_1.createSelector(normalize_1.getNormalizedEntities, exports.getModifiedNormalizedEntities, function (base, modified) {
+    return immutable_1.fromJS(base)
+        .mergeDeep(immutable_1.fromJS(modified))
+        .toJS();
+});
 function createCombinedSchemaSelectors(schema) {
     return {
         getNormalizedEntities: exports.getCombinedNormalizedEntities,

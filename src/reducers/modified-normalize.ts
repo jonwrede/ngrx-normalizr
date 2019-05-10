@@ -250,7 +250,10 @@ export const getCombinedNormalizedEntities: MemoizedSelector<
 > = createSelector(
   getNormalizedEntities,
   getModifiedNormalizedEntities,
-  (base: EntityMap, modified: EntityMap) => mergeDeep(base, modified)
+  (base: EntityMap, modified: EntityMap) =>
+    fromJS(base)
+      .mergeDeep(fromJS(modified))
+      .toJS()
 );
 
 /**
