@@ -1,80 +1,82 @@
+import { NMState } from './index';
 import { schema, normalize } from 'normalizr';
 import produce from 'immer';
-import { entityActionCreator, actionCreator } from '../actions';
-import { ActionReducer } from '@ngrx/store';
+import { nmActions } from '../actions';
 
 export interface NMEntityState<T> {
   original: { [id: string]: T };
   modified: { [id: string]: T };
 }
 
-export const initialState = {
+export interface EntityState<T> {
+  original: { [id: string]: T };
+  modified: { [id: string]: T };
+}
+export interface NMState {
+  [key: string]: EntityState<object>;
+}
+
+const entityInitialState: EntityState<object> = {
   original: {},
   modified: {}
 };
 
-export function reducer<T>(key: string) {
-  return produce(
-    (draft, action) =>
-      entityActionCreator<T>(key).match(action, {
-        ['SET_' + key]: (data: T[]) => {},
-        ['ADD_' + key]: (data: T[]) => {},
-        ['DELETE_' + key]: (id: string) => {},
-        ['CLEAR_' + key]: () => {},
-        ['SET_MODFIFIED_' + key]: (data: T[]) => {},
-        ['ADD_MODFIFIED_' + key]: (data: T[]) => {},
-        ['DELETE_MODFIFIED_' + key]: (id: string) => {},
-        ['CLEAR_MODFIFIED_' + key]: () => {},
-        default: () => {}
-      }),
-    initialState
+export function initialState(entites: string[]): NMState {
+  const result: NMState = {};
+  entites.forEach((entity: string) => (result[entity] = entityInitialState));
+  return result;
+}
+
+function set(
+  type: 'original' | 'modified',
+  draft: NMState,
+  data: any[],
+  entitySchema: schema.Entity
+): void {
+  const normalizedData = normalize(data, [entitySchema]);
+  Object.entries(normalizedData.entities).forEach(
+    ([key, dict]: [string, { [id: string]: object }]) =>
+      (draft[key][type] = dict)
   );
 }
 
-export function metaReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return produce((draft, action) =>
-    actionCreator<any>().match(action, {
-      SET: (value: { data: any[]; schema: schema.Entity }) => {
-        const { data, schema } = value;
-        const normalizedData = normalize(data, [schema]);
-        Object.entries(normalizedData.entities).forEach(
-          ([key, dict]: [string, { [id: string]: object }]) =>
-            (draft[key].original = dict)
-        );
-      },
-      SET_MODFIFIED: (value: { data: any[]; schema: schema.Entity }) => {
-        const { data, schema } = value;
-        const normalizedData = normalize(data, schema);
-        Object.entries(normalizedData.entities).forEach(
-          ([key, dict]: [string, { [id: string]: object }]) =>
-            (draft[key].modified = dict)
-        );
-      },
-      ADD: (value: { data: any[]; schema: schema.Entity }) => {
-        const { data, schema } = value;
-        const normalizedData = normalize(data, schema);
-        Object.entries(normalizedData.entities).forEach(
-          ([key, dict]: [string, { [id: string]: object }]) => {
-            Object.entries(dict).forEach(([id, obj]: [string, object]) => {
-              draft[key].original[id] = obj;
-            });
-          }
-        );
-      },
-      ADD_MODFIFIED: (value: { data: any[]; schema: schema.Entity }) => {
-        const { data, schema } = value;
-        const normalizedData = normalize(data, schema);
-        Object.entries(normalizedData.entities).forEach(
-          ([key, dict]: [string, { [id: string]: object }]) => {
-            Object.entries(dict).forEach(([id, obj]: [string, object]) => {
-              draft[key].modified[id] = obj;
-            });
-          }
-        );
-      },
-      default: () => {
-        return reducer(draft, action);
-      }
-    })
+function add(
+  type: 'original' | 'modified',
+  draft: NMState,
+  data: any[],
+  entitySchema: schema.Entity
+): void {
+  const normalizedData = normalize(data, [entitySchema]);
+  Object.entries(normalizedData.entities).forEach(
+    ([key, dict]: [string, { [id: string]: object }]) =>
+      Object.entries(dict).forEach(
+        ([id, obj]: [string, object]) => (draft[key][type][id] = obj)
+      )
+  );
+}
+
+export function reducer(entites: string[]) {
+  return produce(
+    (draft, action) =>
+      nmActions<any>().match(action, {
+        SET: (value: { data: any[]; schema: schema.Entity }) => {
+          const { data, schema } = value;
+          set('original', draft, data, schema);
+        },
+        SET_MODFIFIED: (value: { data: any[]; schema: schema.Entity }) => {
+          const { data, schema } = value;
+          set('modified', draft, data, schema);
+        },
+        ADD: (value: { data: any[]; schema: schema.Entity }) => {
+          const { data, schema } = value;
+          add('original', draft, data, schema);
+        },
+        ADD_MODFIFIED: (value: { data: any[]; schema: schema.Entity }) => {
+          const { data, schema } = value;
+          add('modified', draft, data, schema);
+        },
+        default: () => {}
+      }),
+    initialState(entites)
   );
 }

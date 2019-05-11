@@ -3,72 +3,54 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var normalizr_1 = require("normalizr");
 var immer_1 = require("immer");
 var actions_1 = require("../actions");
-exports.initialState = {
+var entityInitialState = {
     original: {},
     modified: {}
 };
-function reducer(key) {
-    return immer_1.default(function (draft, action) {
-        var _a;
-        return actions_1.entityActionCreator(key).match(action, (_a = {},
-            _a['SET_' + key] = function (data) { },
-            _a['ADD_' + key] = function (data) { },
-            _a['DELETE_' + key] = function (id) { },
-            _a['CLEAR_' + key] = function () { },
-            _a['SET_MODFIFIED_' + key] = function (data) { },
-            _a['ADD_MODFIFIED_' + key] = function (data) { },
-            _a['DELETE_MODFIFIED_' + key] = function (id) { },
-            _a['CLEAR_MODFIFIED_' + key] = function () { },
-            _a.default = function () { },
-            _a));
-    }, exports.initialState);
+function initialState(entites) {
+    var result = {};
+    entites.forEach(function (entity) { return (result[entity] = entityInitialState); });
+    return result;
 }
-exports.reducer = reducer;
-function metaReducer(reducer) {
-    return immer_1.default(function (draft, action) {
-        return actions_1.actionCreator().match(action, {
-            SET: function (value) {
-                var data = value.data, schema = value.schema;
-                var normalizedData = normalizr_1.normalize(data, [schema]);
-                Object.entries(normalizedData.entities).forEach(function (_a) {
-                    var key = _a[0], dict = _a[1];
-                    return (draft[key].original = dict);
-                });
-            },
-            SET_MODFIFIED: function (value) {
-                var data = value.data, schema = value.schema;
-                var normalizedData = normalizr_1.normalize(data, schema);
-                Object.entries(normalizedData.entities).forEach(function (_a) {
-                    var key = _a[0], dict = _a[1];
-                    return (draft[key].modified = dict);
-                });
-            },
-            ADD: function (value) {
-                var data = value.data, schema = value.schema;
-                var normalizedData = normalizr_1.normalize(data, schema);
-                Object.entries(normalizedData.entities).forEach(function (_a) {
-                    var key = _a[0], dict = _a[1];
-                    Object.entries(dict).forEach(function (_a) {
-                        var id = _a[0], obj = _a[1];
-                        draft[key].original[id] = obj;
-                    });
-                });
-            },
-            ADD_MODFIFIED: function (value) {
-                var data = value.data, schema = value.schema;
-                var normalizedData = normalizr_1.normalize(data, schema);
-                Object.entries(normalizedData.entities).forEach(function (_a) {
-                    var key = _a[0], dict = _a[1];
-                    Object.entries(dict).forEach(function (_a) {
-                        var id = _a[0], obj = _a[1];
-                        draft[key].modified[id] = obj;
-                    });
-                });
-            },
-            default: function () {
-                return reducer(draft, action);
-            }
+exports.initialState = initialState;
+function set(type, draft, data, entitySchema) {
+    var normalizedData = normalizr_1.normalize(data, [entitySchema]);
+    Object.entries(normalizedData.entities).forEach(function (_a) {
+        var key = _a[0], dict = _a[1];
+        return (draft[key][type] = dict);
+    });
+}
+function add(type, draft, data, entitySchema) {
+    var normalizedData = normalizr_1.normalize(data, [entitySchema]);
+    Object.entries(normalizedData.entities).forEach(function (_a) {
+        var key = _a[0], dict = _a[1];
+        return Object.entries(dict).forEach(function (_a) {
+            var id = _a[0], obj = _a[1];
+            return (draft[key][type][id] = obj);
         });
     });
 }
-exports.metaReducer = metaReducer;
+function reducer(entites) {
+    return immer_1.default(function (draft, action) {
+        return actions_1.nmActions().match(action, {
+            SET: function (value) {
+                var data = value.data, schema = value.schema;
+                set('original', draft, data, schema);
+            },
+            SET_MODFIFIED: function (value) {
+                var data = value.data, schema = value.schema;
+                set('modified', draft, data, schema);
+            },
+            ADD: function (value) {
+                var data = value.data, schema = value.schema;
+                add('original', draft, data, schema);
+            },
+            ADD_MODFIFIED: function (value) {
+                var data = value.data, schema = value.schema;
+                add('modified', draft, data, schema);
+            },
+            default: function () { }
+        });
+    }, initialState(entites));
+}
+exports.reducer = reducer;

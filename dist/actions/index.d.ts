@@ -1,10 +1,5 @@
 import { schema } from 'normalizr';
-export declare function entityActionCreator<T>(key: string): import("unionize").Unionized<{
-    [x: string]: {};
-}, import("unionize").SingleValueVariants<{
-    [x: string]: {};
-}, "type", "payload">, "type">;
-export declare function actionCreator<T>(): import("unionize").Unionized<{
+export declare function nmActions<T>(): import("unionize").Unionized<{
     SET: {
         data: T[];
         schema: schema.Entity;
@@ -17,7 +12,9 @@ export declare function actionCreator<T>(): import("unionize").Unionized<{
         data: string[];
         schema: schema.Entity;
     };
-    CLEAR: {};
+    CLEAR: {
+        schema: schema.Entity;
+    };
     SET_MODFIFIED: {
         data: T[];
         schema: schema.Entity;
@@ -30,7 +27,9 @@ export declare function actionCreator<T>(): import("unionize").Unionized<{
         data: string[];
         schema: schema.Entity;
     };
-    CLEAR_MODFIFIED: {};
+    CLEAR_MODFIFIED: {
+        schema: schema.Entity;
+    };
 }, import("unionize").SingleValueVariants<{
     SET: {
         data: T[];
@@ -44,7 +43,9 @@ export declare function actionCreator<T>(): import("unionize").Unionized<{
         data: string[];
         schema: schema.Entity;
     };
-    CLEAR: {};
+    CLEAR: {
+        schema: schema.Entity;
+    };
     SET_MODFIFIED: {
         data: T[];
         schema: schema.Entity;
@@ -57,5 +58,449 @@ export declare function actionCreator<T>(): import("unionize").Unionized<{
         data: string[];
         schema: schema.Entity;
     };
-    CLEAR_MODFIFIED: {};
+    CLEAR_MODFIFIED: {
+        schema: schema.Entity;
+    };
 }, "type", "payload">, "type">;
+export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): {
+    SET: (data: T[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    ADD: (data: T[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    DELETE: (data: string[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    CLEAR: () => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    SET_MODFIFIED: (data: T[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    ADD_MODFIFIED: (data: T[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    DELETE_MODFIFIED: (data: string[]) => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+    CLEAR_MODFIFIED: () => ({
+        type: "SET";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "SET_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "ADD_MODFIFIED";
+    } & {
+        payload: {
+            data: T[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "DELETE_MODFIFIED";
+    } & {
+        payload: {
+            data: string[];
+            schema: schema.Entity;
+        };
+    }) | ({
+        type: "CLEAR_MODFIFIED";
+    } & {
+        payload: {
+            schema: schema.Entity;
+        };
+    });
+};
