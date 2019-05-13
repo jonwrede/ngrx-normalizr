@@ -5,7 +5,7 @@ import { nmActions } from '../actions';
 
 export interface Schema {
   key: string;
-  schema: { [id: string]: Schema };
+  schema?: { [id: string]: Schema };
 }
 export interface NMEntityState<T> {
   original: { [id: string]: T };
@@ -80,7 +80,7 @@ function remove(
       Object.entries(entitySchema.schema).forEach(
         ([key, schema]: [string, Schema]) => {
           if (ref.hasOwnProperty(key) && typeof ref[key] === 'object') {
-            remove(type, draft, Object.values(ref), schema, children);
+            remove(type, draft, Object.values(ref[key]), schema, children);
           }
         }
       );
@@ -115,7 +115,7 @@ export function reducer(entites: string[]) {
           children?: boolean;
         }) => {
           const { data, schema, children } = value;
-          remove('original', draft, data, (schema as any) as Schema, children);
+          remove('original', draft, data, schema, children);
         },
         DELETE_MODFIFIED: (value: {
           data: string[];
@@ -123,7 +123,7 @@ export function reducer(entites: string[]) {
           children?: boolean;
         }) => {
           const { data, schema, children } = value;
-          remove('modified', draft, data, (schema as any) as Schema, children);
+          remove('modified', draft, data, schema, children);
         },
         default: () => {}
       }),

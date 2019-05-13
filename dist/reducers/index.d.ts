@@ -1,7 +1,7 @@
 import { NMState, Schema } from './index';
 export interface Schema {
     key: string;
-    schema: {
+    schema?: {
         [id: string]: Schema;
     };
 }

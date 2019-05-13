@@ -44,7 +44,7 @@ function remove(type, draft, data, entitySchema, children) {
             Object.entries(entitySchema.schema).forEach(function (_a) {
                 var key = _a[0], schema = _a[1];
                 if (ref.hasOwnProperty(key) && typeof ref[key] === 'object') {
-                    remove(type, draft, Object.values(ref), schema, children);
+                    remove(type, draft, Object.values(ref[key]), schema, children);
                 }
             });
         }
