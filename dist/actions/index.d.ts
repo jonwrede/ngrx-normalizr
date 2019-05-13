@@ -181,7 +181,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
             schema: schema.Entity;
         };
     });
-    DELETE: (data: string[]) => ({
+    DELETE: (data: string[], children?: boolean) => ({
         type: "SET";
     } & {
         payload: {
@@ -409,7 +409,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
             schema: schema.Entity;
         };
     });
-    DELETE_MODFIFIED: (data: string[]) => ({
+    DELETE_MODFIFIED: (data: string[], children?: boolean) => ({
         type: "SET";
     } & {
         payload: {

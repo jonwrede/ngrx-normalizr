@@ -22,8 +22,9 @@ function nmEntityActionsCreator(entitySchema) {
     return {
         SET: function (data) { return actions.SET({ data: data, schema: entitySchema }); },
         ADD: function (data) { return actions.ADD({ data: data, schema: entitySchema }); },
-        DELETE: function (data) {
-            return actions.DELETE({ data: data, schema: entitySchema });
+        DELETE: function (data, children) {
+            if (children === void 0) { children = true; }
+            return actions.DELETE({ data: data, schema: entitySchema, children: children });
         },
         CLEAR: function () { return actions.CLEAR({ schema: entitySchema }); },
         SET_MODFIFIED: function (data) {
@@ -32,8 +33,13 @@ function nmEntityActionsCreator(entitySchema) {
         ADD_MODFIFIED: function (data) {
             return actions.ADD_MODFIFIED({ data: data, schema: entitySchema });
         },
-        DELETE_MODFIFIED: function (data) {
-            return actions.DELETE_MODFIFIED({ data: data, schema: entitySchema });
+        DELETE_MODFIFIED: function (data, children) {
+            if (children === void 0) { children = true; }
+            return actions.DELETE_MODFIFIED({
+                data: data,
+                schema: entitySchema,
+                children: children
+            });
         },
         CLEAR_MODFIFIED: function () { return actions.CLEAR_MODFIFIED({ schema: entitySchema }); }
     };
