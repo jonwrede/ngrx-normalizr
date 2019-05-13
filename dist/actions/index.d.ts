@@ -11,6 +11,7 @@ export declare function nmActions<T>(): import("unionize").Unionized<{
     DELETE: {
         data: string[];
         schema: schema.Entity;
+        children?: boolean;
     };
     CLEAR: {
         schema: schema.Entity;
@@ -26,6 +27,7 @@ export declare function nmActions<T>(): import("unionize").Unionized<{
     DELETE_MODFIFIED: {
         data: string[];
         schema: schema.Entity;
+        children?: boolean;
     };
     CLEAR_MODFIFIED: {
         schema: schema.Entity;
@@ -42,6 +44,7 @@ export declare function nmActions<T>(): import("unionize").Unionized<{
     DELETE: {
         data: string[];
         schema: schema.Entity;
+        children?: boolean;
     };
     CLEAR: {
         schema: schema.Entity;
@@ -57,6 +60,7 @@ export declare function nmActions<T>(): import("unionize").Unionized<{
     DELETE_MODFIFIED: {
         data: string[];
         schema: schema.Entity;
+        children?: boolean;
     };
     CLEAR_MODFIFIED: {
         schema: schema.Entity;
@@ -83,6 +87,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -110,6 +115,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -138,6 +144,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -165,6 +172,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -193,6 +201,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -220,6 +229,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -248,6 +258,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -275,6 +286,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -303,6 +315,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -330,6 +343,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -358,6 +372,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -385,6 +400,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -413,6 +429,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -440,6 +457,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";
@@ -468,6 +486,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR";
@@ -495,6 +514,7 @@ export declare function nmEntityActionsCreator<T>(entitySchema: schema.Entity): 
         payload: {
             data: string[];
             schema: schema.Entity;
+            children?: boolean;
         };
     }) | ({
         type: "CLEAR_MODFIFIED";

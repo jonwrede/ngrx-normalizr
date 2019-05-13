@@ -1,4 +1,10 @@
-import { NMState } from './index';
+import { NMState, Schema } from './index';
+export interface Schema {
+    key: string;
+    schema: {
+        [id: string]: Schema;
+    };
+}
 export interface NMEntityState<T> {
     original: {
         [id: string]: T;
@@ -7,7 +13,7 @@ export interface NMEntityState<T> {
         [id: string]: T;
     };
 }
-export interface EntityState<T> {
+export interface EntityState<T extends object> {
     original: {
         [id: string]: T;
     };

@@ -1,14 +1,18 @@
-import { NMState } from './index';
+import { NMState, Schema } from './index';
 import { schema, normalize } from 'normalizr';
 import produce from 'immer';
 import { nmActions } from '../actions';
 
+export interface Schema {
+  key: string;
+  schema: { [id: string]: Schema };
+}
 export interface NMEntityState<T> {
   original: { [id: string]: T };
   modified: { [id: string]: T };
 }
 
-export interface EntityState<T> {
+export interface EntityState<T extends object> {
   original: { [id: string]: T };
   modified: { [id: string]: T };
 }
@@ -35,8 +39,12 @@ function set(
 ): void {
   const normalizedData = normalize(data, [entitySchema]);
   Object.entries(normalizedData.entities).forEach(
-    ([key, dict]: [string, { [id: string]: object }]) =>
-      (draft[key][type] = dict)
+    ([key, dict]: [string, { [id: string]: object }]) => {
+      if (!draft.hasOwnProperty(key)) {
+        draft[key] = entityInitialState;
+      }
+      draft[key][type] = dict;
+    }
   );
 }
 
@@ -49,10 +57,36 @@ function add(
   const normalizedData = normalize(data, [entitySchema]);
   Object.entries(normalizedData.entities).forEach(
     ([key, dict]: [string, { [id: string]: object }]) =>
-      Object.entries(dict).forEach(
-        ([id, obj]: [string, object]) => (draft[key][type][id] = obj)
-      )
+      Object.entries(dict).forEach(([id, obj]: [string, object]) => {
+        if (!draft.hasOwnProperty(key)) {
+          draft[key] = entityInitialState;
+        }
+        draft[key][type][id] = obj;
+      })
   );
+}
+
+function remove(
+  type: 'original' | 'modified',
+  draft: NMState,
+  data: string[],
+  entitySchema: Schema,
+  children: boolean
+): void {
+  data.forEach((id: string) => {
+    const schemaKey = entitySchema.key;
+    const ref: { [key: string]: any } = draft[schemaKey][type][id];
+    if (children) {
+      Object.entries(entitySchema.schema).forEach(
+        ([key, schema]: [string, Schema]) => {
+          if (ref.hasOwnProperty(key) && typeof ref[key] === 'object') {
+            remove(type, draft, Object.values(ref), schema, children);
+          }
+        }
+      );
+    }
+    delete draft[entitySchema.key][type][id];
+  });
 }
 
 export function reducer(entites: string[]) {
@@ -74,6 +108,22 @@ export function reducer(entites: string[]) {
         ADD_MODFIFIED: (value: { data: any[]; schema: schema.Entity }) => {
           const { data, schema } = value;
           add('modified', draft, data, schema);
+        },
+        DELETE: (value: {
+          data: string[];
+          schema: schema.Entity;
+          children?: boolean;
+        }) => {
+          const { data, schema, children } = value;
+          remove('original', draft, data, (schema as any) as Schema, children);
+        },
+        DELETE_MODFIFIED: (value: {
+          data: string[];
+          schema: schema.Entity;
+          children?: boolean;
+        }) => {
+          const { data, schema, children } = value;
+          remove('modified', draft, data, (schema as any) as Schema, children);
         },
         default: () => {}
       }),

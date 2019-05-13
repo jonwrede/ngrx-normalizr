@@ -6,11 +6,19 @@ export function nmActions<T>() {
     {
       SET: ofType<{ data: T[]; schema: schema.Entity }>(),
       ADD: ofType<{ data: T[]; schema: schema.Entity }>(),
-      DELETE: ofType<{ data: string[]; schema: schema.Entity }>(),
+      DELETE: ofType<{
+        data: string[];
+        schema: schema.Entity;
+        children?: boolean;
+      }>(),
       CLEAR: ofType<{ schema: schema.Entity }>(),
       SET_MODFIFIED: ofType<{ data: T[]; schema: schema.Entity }>(),
       ADD_MODFIFIED: ofType<{ data: T[]; schema: schema.Entity }>(),
-      DELETE_MODFIFIED: ofType<{ data: string[]; schema: schema.Entity }>(),
+      DELETE_MODFIFIED: ofType<{
+        data: string[];
+        schema: schema.Entity;
+        children?: boolean;
+      }>(),
       CLEAR_MODFIFIED: ofType<{ schema: schema.Entity }>()
     },
     {
