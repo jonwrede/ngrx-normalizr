@@ -33,15 +33,19 @@ export function nmEntityActionsCreator<T>(entitySchema: schema.Entity) {
   return {
     SET: (data: T[]) => actions.SET({ data: data, schema: entitySchema }),
     ADD: (data: T[]) => actions.ADD({ data: data, schema: entitySchema }),
-    DELETE: (data: string[]) =>
-      actions.DELETE({ data: data, schema: entitySchema }),
+    DELETE: (data: string[], children: boolean = true) =>
+      actions.DELETE({ data: data, schema: entitySchema, children: children }),
     CLEAR: () => actions.CLEAR({ schema: entitySchema }),
     SET_MODFIFIED: (data: T[]) =>
       actions.SET_MODFIFIED({ data: data, schema: entitySchema }),
     ADD_MODFIFIED: (data: T[]) =>
       actions.ADD_MODFIFIED({ data: data, schema: entitySchema }),
-    DELETE_MODFIFIED: (data: string[]) =>
-      actions.DELETE_MODFIFIED({ data: data, schema: entitySchema }),
+    DELETE_MODFIFIED: (data: string[], children: boolean = true) =>
+      actions.DELETE_MODFIFIED({
+        data: data,
+        schema: entitySchema,
+        children: children
+      }),
     CLEAR_MODFIFIED: () => actions.CLEAR_MODFIFIED({ schema: entitySchema })
   };
 }
